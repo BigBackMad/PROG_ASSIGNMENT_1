@@ -394,7 +394,26 @@ public class Main {
                                 break;
 
                             case "4":
-                                // TODO: display only available (empty) beds
+                                System.out.println("\n--- Available Beds Report ---");
+                                int availableCount = 0;
+                                bedNum = 0;
+
+                                for (int r = 0; r < 4; r++) {
+                                    for (int c = 0; c < 5; c++) {
+                                        bedNum++;
+
+                                        if (wardBeds[r][c] == null) {
+                                            System.out.printf("B%02d: [Available]\n", bedNum);
+                                            availableCount++;
+                                        }
+                                    }
+                                }
+
+                                if (availableCount == 0) {
+                                    System.out.println("Notice: No beds are currently available. The ward is full.");
+                                } else {
+                                    System.out.println("Total Available Beds: " + availableCount);
+                                }
                                 break;
 
                             case "5":
