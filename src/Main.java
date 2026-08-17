@@ -343,11 +343,54 @@ public class Main {
                                 break;
 
                             case "2":
-                                // TODO: release a bed when a patient is discharged
+                                System.out.println("\n--- Release a Bed (Discharge) ---");
+                                System.out.print("Enter Patient ID to release from bed >> ");
+                                String releaseID = sc.nextLine();
+
+                                boolean freed = false;
+
+                                // 1. Iterate through the 4x5 ward layout
+                                for (int r = 0; r < 4; r++) { // 4 rows
+                                    for (int c = 0; c < 5; c++) { // 5 columns
+                                        // 2. Check if the bed is occupied (not null) AND if the ID matches
+                                        if (wardBeds[r][c] != null && wardBeds[r][c].getPatientID().equals(releaseID)) {
+
+                                            wardBeds[r][c].setBedNumber(0); // 0 = no bed assigned, since real beds start at 1
+                                            wardBeds[r][c] = null;
+
+                                            freed = true;
+                                            System.out.println("Success: Patient " + releaseID + " discharged. Bed is now available.");
+                                            break;
+                                        }
+                                    }
+                                    if (freed) break; // Stop outer loop if patient was found
+                                }
+
+                                // 4. Handle the "Not Found" scenario
+                                if (!freed) {
+                                    System.out.println("Error: Patient ID " + releaseID + " is not currently assigned to a bed.");
+                                }
                                 break;
 
                             case "3":
-                                // TODO: display the full 4x5 ward layout
+
+                                System.out.println("\n--- Complete Ward Layout ---");
+                                int bedNum = 0; // tracks bed number as we go
+
+                                for (int r = 0; r < wardBeds.length; r++) {
+                                    for (int c = 0; c < wardBeds[r].length; c++) {
+                                        bedNum++; // move to next bed number
+
+                                        String bedLabel = String.format("B%02d", bedNum);
+
+                                        if (wardBeds[r][c] == null) {
+                                            System.out.print(bedLabel + ": [Available]  ");
+                                        } else {
+                                            System.out.print(bedLabel + ": [" + wardBeds[r][c].getPatientID() + "]  ");
+                                        }
+                                    }
+                                    System.out.println();
+                                }
                                 break;
 
                             case "4":
