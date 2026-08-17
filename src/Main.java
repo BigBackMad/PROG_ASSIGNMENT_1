@@ -10,6 +10,15 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         ArrayList<Patient> patientList = new ArrayList<Patient>();
 
+        /*
+         * NOTE: still working on Feature 5 (Unit Testing).
+         * so they can be tested without needing Scanner input.
+         * Added the PatientManager class for the logic that currently exist under each case.
+         * Still to do:
+         * - turn the logic under each case into methods and into the PatientManager class, separate from Main
+         * - write the actual JUnit tests
+         */
+
         final int QUIT = 9;
         int userChoice;
 
@@ -534,7 +543,7 @@ public class Main {
 
                     if (sortChoice.equals("1") || sortChoice.equals("2")) {
 
-                        // Bubble sort: repeatedly compare neighbouring patients and swap if out of order
+                        // Bubble sort: repeatedly compare adjacent patients and swap if out of order
                         for (int i = 0; i < patientList.size() - 1; i++) {
                             for (int j = 0; j < patientList.size() - 1 - i; j++) {
 
