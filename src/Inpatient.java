@@ -1,7 +1,7 @@
 public class Inpatient extends Patient {
 
     private int wardNumber;
-    private int bedNumber;
+    private String bedNumber;
 
     public void setWardNumber(int wardNumber) {
         this.wardNumber = wardNumber;
@@ -11,11 +11,11 @@ public class Inpatient extends Patient {
         return wardNumber;
     }
 
-    public void setBedNumber(int bedNumber) {
+    public void setBedNumber(String bedNumber) {
         this.bedNumber = bedNumber;
     }
 
-    public int getBedNumber() {
+    public String getBedNumber() {
         return bedNumber;
     }
 }

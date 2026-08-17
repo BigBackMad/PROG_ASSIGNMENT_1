@@ -21,7 +21,8 @@ public class Main {
                     " 4. Delete a patient.\n" +
                     " 5. Display all registered patients.\n" +
                     " 6. Bed Management.\n" +
-                    " 7. Exit.\n");
+                    " 7. Reports.\n" +
+                    " 8. Exit.");
 
             System.out.print(" Enter your choice--> ");
             userChoice = sc.nextInt();
@@ -315,15 +316,16 @@ public class Main {
 
                                         // Step 4: find the first empty bed and put the patient there
                                         boolean allocated = false;
-                                        int bedCode = 0; // tracks which bed number we're currently looking at
+                                        int bedNum = 0; // tracks which bed number we're currently looking at
 
                                         for (int r = 0; r < 4 && !allocated; r++) {
                                             for (int c = 0; c < 5 && !allocated; c++) {
-                                                bedCode++; // move to the next bed number every time we check a cell
+                                                bedNum++; // move to the next bed number every time we check a cell
 
                                                 if (wardBeds[r][c] == null) {
-
                                                     wardBeds[r][c] = (Inpatient) foundPatient;
+
+                                                    String bedCode = String.format("B%02d", bedNum); // e.g. "B07"
                                                     wardBeds[r][c].setWardNumber(1);
                                                     wardBeds[r][c].setBedNumber(bedCode);
 
@@ -355,7 +357,7 @@ public class Main {
                                         // 2. Check if the bed is occupied (not null) AND if the ID matches
                                         if (wardBeds[r][c] != null && wardBeds[r][c].getPatientID().equals(releaseID)) {
 
-                                            wardBeds[r][c].setBedNumber(0); // 0 = no bed assigned, since real beds start at 1
+                                            wardBeds[r][c].setBedNumber(""); // 0 = no bed assigned, since real beds start at 1
                                             wardBeds[r][c] = null;
 
                                             freed = true;
@@ -417,7 +419,27 @@ public class Main {
                                 break;
 
                             case "5":
-                                // TODO: display only occupied beds
+                                System.out.println("\n--- Occupied Beds Report ---");
+                                int occupiedCount = 0;
+
+                                for (int r = 0; r < 4; r++) {
+                                    for (int c = 0; c < 5; c++) {
+                                        if (wardBeds[r][c] != null) {
+
+                                            String bedLabel = wardBeds[r][c].getBedNumber(); // read stored label directly
+                                            String patientID = wardBeds[r][c].getPatientID();
+
+                                            System.out.println(bedLabel + ": [Occupied by " + patientID + "]");
+                                            occupiedCount++;
+                                        }
+                                    }
+                                }
+
+                                if (occupiedCount == 0) {
+                                    System.out.println("Notice: There are currently no patients assigned to beds.");
+                                } else {
+                                    System.out.println("Total Occupied Beds: " + occupiedCount);
+                                }
                                 break;
 
                             case "6":
@@ -431,6 +453,10 @@ public class Main {
                     break;
 
                 case 7:
+                    System.out.println("Exiting the system. Goodbye!");
+                    break;
+
+                case 8:
                     System.out.println("Exiting the system. Goodbye!");
                     break;
 
