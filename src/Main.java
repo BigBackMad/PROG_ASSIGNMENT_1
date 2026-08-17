@@ -245,8 +245,24 @@ public class Main {
                 break;
 
             case 5:
-                // Logic for "Display All Patients"
-                System.out.println("Displaying all registered patients...");
+                System.out.println("\n--- Registered Patient Report ---");
+
+                // 1. Check if the database is empty using the isEmpty() method [3]
+                if (patientList.isEmpty()) {
+                    System.out.println("No patients are currently registered in the system.");
+                } else {
+                    // 2. Display the total number of patients as required for Feature 3 [2]
+                    System.out.println("Total Registered Patients: " + patientList.size());
+                    System.out.println("---------------------------------");
+
+                    // 3. Iterate through the list using a loop [4, 5]
+                    for (int i = 0; i < patientList.size(); i++) {
+                        // 4. Retrieve each patient and call their specific display method
+                        patientList.get(i).displayDetails();
+                        System.out.println("---------------------------------");
+                    }
+                }
+
                 break;
 
             case 6:
