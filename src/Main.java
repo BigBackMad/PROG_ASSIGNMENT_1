@@ -14,13 +14,15 @@ public class Main {
         int userChoice;
 
         do {
-            System.out.println(" 1. Register a new patient.\n" +
+            System.out.println(" " +
+                    " 1. Register a new patient.\n" +
                     " 2. Search for a patient using their Patient ID.\n" +
                     " 3. Update an existing patient's details.\n" +
                     " 4. Delete a patient.\n" +
                     " 5. Display all registered patients.\n" +
                     " 6. Bed Management.\n" +
                     " 7. Exit.\n");
+
             System.out.print(" Enter your choice--> ");
             userChoice = sc.nextInt();
             sc.nextLine(); // clear leftover newline so nextLine() calls below work properly
