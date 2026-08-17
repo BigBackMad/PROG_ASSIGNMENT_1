@@ -279,7 +279,67 @@ public class Main {
 
                         switch (bedChoice) {
                             case "1":
-                                // TODO: allocate an available bed to an Inpatient
+                                System.out.println("\n--- Allocate Bed ---");
+                                System.out.print("Enter Patient ID to allocate a bed >> ");
+                                String targetID = sc.nextLine();
+
+                                // Step 1: find the patient in the list
+                                Patient foundPatient = null;
+                                for (int i = 0; i < patientList.size(); i++) {
+                                    if (patientList.get(i).getPatientID().equals(targetID)) {
+                                        foundPatient = patientList.get(i);
+                                        break;
+                                    }
+                                }
+
+                                // Step 2: make sure the patient exists and is an Inpatient
+                                if (foundPatient == null) {
+                                    System.out.println("Error: Patient ID not found.");
+                                } else if (foundPatient.getCategory() != PatientCategory.INPATIENT) {
+                                    System.out.println("Error: Only Inpatients can be allocated a hospital bed.");
+                                } else {
+
+                                    // Step 3: check they don't already have a bed
+                                    boolean alreadyHasBed = false;
+                                    for (int r = 0; r < 4; r++) { // go through each row (0,1,2,3)
+                                        for (int c = 0; c < 5; c++) {
+                                            if (wardBeds[r][c] != null && wardBeds[r][c].getPatientID().equals(targetID)) {
+                                                alreadyHasBed = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (alreadyHasBed) {
+                                        System.out.println("Error: This patient is already assigned to a bed.");
+                                    } else {
+
+                                        // Step 4: find the first empty bed and put the patient there
+                                        boolean allocated = false;
+                                        int bedCode = 0; // tracks which bed number we're currently looking at
+
+                                        for (int r = 0; r < 4 && !allocated; r++) {
+                                            for (int c = 0; c < 5 && !allocated; c++) {
+                                                bedCode++; // move to the next bed number every time we check a cell
+
+                                                if (wardBeds[r][c] == null) {
+
+                                                    wardBeds[r][c] = (Inpatient) foundPatient;
+                                                    wardBeds[r][c].setWardNumber(1);
+                                                    wardBeds[r][c].setBedNumber(bedCode);
+
+                                                    System.out.println("Success: Patient " + targetID + " allocated to Bed " + bedCode);
+                                                    allocated = true;
+
+                                                }
+                                            }
+                                        }
+
+                                        // Step 5: if we never found an empty bed, say so
+                                        if (!allocated) {
+                                            System.out.println("Error: No beds available. The ward is currently full.");
+                                        }
+                                    }
+                                }
                                 break;
 
                             case "2":
