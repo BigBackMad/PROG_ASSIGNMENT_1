@@ -18,24 +18,24 @@ public class Patient {
         return firstName;
     }
 
-    public String setFirstName(String firstName) {
-        return this.firstName = firstName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public String setLastName(String lastName) {
-        return this.lastName = lastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public String setGender(String gender) {
-        return this.gender = gender;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     // Example Setter: Updates the Patient ID

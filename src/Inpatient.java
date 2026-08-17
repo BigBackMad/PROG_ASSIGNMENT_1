@@ -1,2 +1,2 @@
-public class Inpatient {
+public class Inpatient extends Patient {
 }
