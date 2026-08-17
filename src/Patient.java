@@ -12,7 +12,6 @@ public class Patient {
     public Patient() {
     }
 
-    // Example Getter: Retrieves the Patient ID
     public String getPatientID() {
         return patientID;
     }
@@ -41,12 +40,10 @@ public class Patient {
         this.gender = gender;
     }
 
-    // Example Setter: Updates the Patient ID
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
-    // Example Getter for age
     public int getAge() {
         return age;
     }
