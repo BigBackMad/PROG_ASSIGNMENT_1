@@ -10,19 +10,20 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         ArrayList<Patient> patientList = new ArrayList<Patient>();
 
-        final int QUIT = 7;
+        final int QUIT = 9;
         int userChoice;
 
         do {
-            System.out.println(" " +
+            System.out.println(
                     " 1. Register a new patient.\n" +
-                    " 2. Search for a patient using their Patient ID.\n" +
-                    " 3. Update an existing patient's details.\n" +
-                    " 4. Delete a patient.\n" +
-                    " 5. Display all registered patients.\n" +
-                    " 6. Bed Management.\n" +
-                    " 7. Reports.\n" +
-                    " 8. Exit.");
+                            " 2. Search for a patient using their Patient ID.\n" +
+                            " 3. Update an existing patient's details.\n" +
+                            " 4. Delete a patient.\n" +
+                            " 5. Display all registered patients.\n" +
+                            " 6. Bed Management.\n" +
+                            " 7. Reports.\n" +
+                            " 8. Sort Patients.\n" +
+                            " 9. Exit.\n");
 
             System.out.print(" Enter your choice--> ");
             userChoice = sc.nextInt();
@@ -31,64 +32,76 @@ public class Main {
             switch (userChoice) {
 
                 case 1:
-                    // Logic for "Register Patient"
                     System.out.println("\n--- Register New Patient ---");
 
                     // 1. Capture Patient ID
                     System.out.print("Enter 6-digit Patient ID >> ");
                     String id = sc.nextLine();
 
-                    // 2. Capture Names
-                    System.out.print("Enter First Name >> ");
-                    String firstName = sc.nextLine();
-
-                    System.out.print("Enter Last Name >> ");
-                    String lastName = sc.nextLine();
-
-                    // 3. Capture Age
-                    System.out.print("Enter Age >> ");
-                    int age = sc.nextInt();
-                    sc.nextLine();
-
-                    // 4. Capture Gender and Condition
-                    System.out.print("Enter Gender >> ");
-                    String gender = sc.nextLine();
-
-                    System.out.print("Enter Medical Condition >> ");
-                    String condition = sc.nextLine();
-
-                    // 5. Select Category (Enum)
-                    System.out.println("Select Category: 1. Inpatient, 2. Outpatient, 3. Emergency");
-                    System.out.print("Enter Choice >> ");
-                    int catChoice = sc.nextInt();
-                    sc.nextLine();
-
-                    // Create as Inpatient if category 1 was chosen, otherwise a plain Patient
-                    Patient newPatient;
-                    if (catChoice == 1) {
-                        newPatient = new Inpatient();
-                    } else {
-                        newPatient = new Patient();
+                    // Check for duplicate ID before going any further
+                    boolean duplicateID = false;
+                    for (int i = 0; i < patientList.size(); i++) {
+                        if (patientList.get(i).getPatientID().equals(id)) {
+                            duplicateID = true;
+                            break;
+                        }
                     }
 
-                    if (catChoice == 1) {
-                        newPatient.setCategory(PatientCategory.INPATIENT);
-                    } else if (catChoice == 2) {
-                        newPatient.setCategory(PatientCategory.OUTPATIENT);
+                    if (duplicateID) {
+                        System.out.println("Error: A patient with ID " + id + " is already registered.");
                     } else {
-                        newPatient.setCategory(PatientCategory.EMERGENCY);
+                        // 2. Capture Names
+                        System.out.print("Enter First Name >> ");
+                        String firstName = sc.nextLine();
+
+                        System.out.print("Enter Last Name >> ");
+                        String lastName = sc.nextLine();
+
+                        // 3. Capture Age
+                        System.out.print("Enter Age >> ");
+                        int age = sc.nextInt();
+                        sc.nextLine();
+
+                        // 4. Capture Gender and Condition
+                        System.out.print("Enter Gender >> ");
+                        String gender = sc.nextLine();
+
+                        System.out.print("Enter Medical Condition >> ");
+                        String condition = sc.nextLine();
+
+                        // 5. Select Category (Enum)
+                        System.out.println("Select Category: 1. Inpatient, 2. Outpatient, 3. Emergency");
+                        System.out.print("Enter Choice >> ");
+                        int catChoice = sc.nextInt();
+                        sc.nextLine();
+
+                        // Create as Inpatient if category 1 was chosen, otherwise a plain Patient
+                        Patient newPatient;
+                        if (catChoice == 1) {
+                            newPatient = new Inpatient(id, firstName, lastName, age, gender, condition, PatientCategory.INPATIENT);
+                        } else if (catChoice == 2) {
+                            newPatient = new Patient();
+                            newPatient.setPatientID(id);
+                            newPatient.setFirstName(firstName);
+                            newPatient.setLastName(lastName);
+                            newPatient.setAge(age);
+                            newPatient.setGender(gender);
+                            newPatient.setMedicalCondition(condition);
+                            newPatient.setCategory(PatientCategory.OUTPATIENT);
+                        } else {
+                            newPatient = new Patient();
+                            newPatient.setPatientID(id);
+                            newPatient.setFirstName(firstName);
+                            newPatient.setLastName(lastName);
+                            newPatient.setAge(age);
+                            newPatient.setGender(gender);
+                            newPatient.setMedicalCondition(condition);
+                            newPatient.setCategory(PatientCategory.EMERGENCY);
+                        }
+
+                        patientList.add(newPatient);
+                        System.out.println("Registration complete. Total patients: " + patientList.size());
                     }
-
-                    newPatient.setPatientID(id);
-                    newPatient.setFirstName(firstName);
-                    newPatient.setLastName(lastName);
-                    newPatient.setAge(age);
-                    newPatient.setGender(gender);
-                    newPatient.setMedicalCondition(condition);
-
-                    patientList.add(newPatient);
-                    System.out.println("Registration complete. Total patients: " + patientList.size());
-
                     break;
 
                 case 2:
@@ -176,13 +189,13 @@ public class Main {
                                     System.out.println("2. Outpatient");
                                     System.out.println("3. Emergency");
                                     System.out.print("Choose category >> ");
-                                    catChoice = sc.nextInt();
+                                    int newCatChoice = sc.nextInt();
                                     sc.nextLine();
 
-                                    if (catChoice == 1) {
+                                    if (newCatChoice == 1) {
                                         foundPatient.setCategory(PatientCategory.INPATIENT);
                                         System.out.println("Category updated.");
-                                    } else if (catChoice == 2) {
+                                    } else if (newCatChoice == 2) {
                                         foundPatient.setCategory(PatientCategory.OUTPATIENT);
                                         System.out.println("Category updated.");
                                     } else {
@@ -216,18 +229,16 @@ public class Main {
                     } else {
                         System.out.print("Enter Patient ID to delete >> ");
                         String deleteID = sc.nextLine();
-                        index = -1;
+                        int deleteIndex = -1;
 
                         for (int i = 0; i < patientList.size(); i++) {
                             if (patientList.get(i).getPatientID().equals(deleteID)) {
-                                index = i;
+                                deleteIndex = i;
                                 break;
                             }
                         }
 
-                        if (index != -1) {
-                            Patient removedPatient = patientList.get(index);
-
+                        if (deleteIndex != -1) {
                             // If this patient is occupying a bed, free it up first
                             for (int row = 0; row < wardBeds.length; row++) {
                                 for (int col = 0; col < wardBeds[row].length; col++) {
@@ -238,7 +249,7 @@ public class Main {
                                 }
                             }
 
-                            patientList.remove(index);
+                            patientList.remove(deleteIndex);
                             System.out.println("Patient ID " + deleteID + " has been successfully deleted.");
 
                         } else {
@@ -285,24 +296,24 @@ public class Main {
                                 String targetID = sc.nextLine();
 
                                 // Step 1: find the patient in the list
-                                Patient foundPatient = null;
+                                Patient targetPatient = null;
                                 for (int i = 0; i < patientList.size(); i++) {
                                     if (patientList.get(i).getPatientID().equals(targetID)) {
-                                        foundPatient = patientList.get(i);
+                                        targetPatient = patientList.get(i);
                                         break;
                                     }
                                 }
 
                                 // Step 2: make sure the patient exists and is an Inpatient
-                                if (foundPatient == null) {
+                                if (targetPatient == null) {
                                     System.out.println("Error: Patient ID not found.");
-                                } else if (foundPatient.getCategory() != PatientCategory.INPATIENT) {
+                                } else if (targetPatient.getCategory() != PatientCategory.INPATIENT) {
                                     System.out.println("Error: Only Inpatients can be allocated a hospital bed.");
                                 } else {
 
                                     // Step 3: check they don't already have a bed
                                     boolean alreadyHasBed = false;
-                                    for (int r = 0; r < 4; r++) { // go through each row (0,1,2,3)
+                                    for (int r = 0; r < 4; r++) {
                                         for (int c = 0; c < 5; c++) {
                                             if (wardBeds[r][c] != null && wardBeds[r][c].getPatientID().equals(targetID)) {
                                                 alreadyHasBed = true;
@@ -316,22 +327,21 @@ public class Main {
 
                                         // Step 4: find the first empty bed and put the patient there
                                         boolean allocated = false;
-                                        int bedNum = 0; // tracks which bed number we're currently looking at
+                                        int bedNum = 0;
 
                                         for (int r = 0; r < 4 && !allocated; r++) {
                                             for (int c = 0; c < 5 && !allocated; c++) {
-                                                bedNum++; // move to the next bed number every time we check a cell
+                                                bedNum++;
 
                                                 if (wardBeds[r][c] == null) {
-                                                    wardBeds[r][c] = (Inpatient) foundPatient;
+                                                    wardBeds[r][c] = (Inpatient) targetPatient;
 
-                                                    String bedCode = String.format("B%02d", bedNum); // e.g. "B07"
+                                                    String bedCode = String.format("B%02d", bedNum);
                                                     wardBeds[r][c].setWardNumber(1);
                                                     wardBeds[r][c].setBedNumber(bedCode);
 
                                                     System.out.println("Success: Patient " + targetID + " allocated to Bed " + bedCode);
                                                     allocated = true;
-
                                                 }
                                             }
                                         }
@@ -351,13 +361,11 @@ public class Main {
 
                                 boolean freed = false;
 
-                                // 1. Iterate through the 4x5 ward layout
-                                for (int r = 0; r < 4; r++) { // 4 rows
-                                    for (int c = 0; c < 5; c++) { // 5 columns
-                                        // 2. Check if the bed is occupied (not null) AND if the ID matches
+                                for (int r = 0; r < 4; r++) {
+                                    for (int c = 0; c < 5; c++) {
                                         if (wardBeds[r][c] != null && wardBeds[r][c].getPatientID().equals(releaseID)) {
 
-                                            wardBeds[r][c].setBedNumber(""); // 0 = no bed assigned, since real beds start at 1
+                                            wardBeds[r][c].setBedNumber(""); // no bed assigned
                                             wardBeds[r][c] = null;
 
                                             freed = true;
@@ -365,25 +373,23 @@ public class Main {
                                             break;
                                         }
                                     }
-                                    if (freed) break; // Stop outer loop if patient was found
+                                    if (freed) break;
                                 }
 
-                                // 4. Handle the "Not Found" scenario
                                 if (!freed) {
                                     System.out.println("Error: Patient ID " + releaseID + " is not currently assigned to a bed.");
                                 }
                                 break;
 
                             case "3":
-
                                 System.out.println("\n--- Complete Ward Layout ---");
-                                int bedNum = 0; // tracks bed number as we go
+                                int layoutBedNum = 0;
 
                                 for (int r = 0; r < wardBeds.length; r++) {
                                     for (int c = 0; c < wardBeds[r].length; c++) {
-                                        bedNum++; // move to next bed number
+                                        layoutBedNum++;
 
-                                        String bedLabel = String.format("B%02d", bedNum);
+                                        String bedLabel = String.format("B%02d", layoutBedNum);
 
                                         if (wardBeds[r][c] == null) {
                                             System.out.print(bedLabel + ": [Available]  ");
@@ -398,14 +404,14 @@ public class Main {
                             case "4":
                                 System.out.println("\n--- Available Beds Report ---");
                                 int availableCount = 0;
-                                bedNum = 0;
+                                int availBedNum = 0;
 
                                 for (int r = 0; r < 4; r++) {
                                     for (int c = 0; c < 5; c++) {
-                                        bedNum++;
+                                        availBedNum++;
 
                                         if (wardBeds[r][c] == null) {
-                                            System.out.printf("B%02d: [Available]\n", bedNum);
+                                            System.out.printf("B%02d: [Available]\n", availBedNum);
                                             availableCount++;
                                         }
                                     }
@@ -426,7 +432,7 @@ public class Main {
                                     for (int c = 0; c < 5; c++) {
                                         if (wardBeds[r][c] != null) {
 
-                                            String bedLabel = wardBeds[r][c].getBedNumber(); // read stored label directly
+                                            String bedLabel = wardBeds[r][c].getBedNumber();
                                             String patientID = wardBeds[r][c].getPatientID();
 
                                             System.out.println(bedLabel + ": [Occupied by " + patientID + "]");
@@ -453,10 +459,115 @@ public class Main {
                     break;
 
                 case 7:
-                    System.out.println("Exiting the system. Goodbye!");
+                    System.out.println("\n--- Ward & Patient Reports ---");
+
+                    // 1. Display all registered patients
+                    System.out.println("\nRegistered Patients:");
+                    if (patientList.isEmpty()) {
+                        System.out.println("No patients are currently registered.");
+                    } else {
+                        for (int i = 0; i < patientList.size(); i++) {
+                            patientList.get(i).displayDetails();
+                            System.out.println("---------------------------------");
+                        }
+                    }
+
+                    // 2. Display all available beds
+                    System.out.println("\nAvailable Beds:");
+                    int reportAvailableCount = 0;
+                    int reportBedNum = 0;
+                    for (int r = 0; r < 4; r++) {
+                        for (int c = 0; c < 5; c++) {
+                            reportBedNum++;
+                            if (wardBeds[r][c] == null) {
+                                System.out.printf("B%02d: [Available]\n", reportBedNum);
+                                reportAvailableCount++;
+                            }
+                        }
+                    }
+                    if (reportAvailableCount == 0) {
+                        System.out.println("No beds are currently available.");
+                    }
+
+                    // 3. Display all occupied beds
+                    System.out.println("\nOccupied Beds:");
+                    int reportOccupiedCount = 0;
+                    for (int r = 0; r < 4; r++) {
+                        for (int c = 0; c < 5; c++) {
+                            if (wardBeds[r][c] != null) {
+                                String bedLabel = wardBeds[r][c].getBedNumber();
+                                String patientID = wardBeds[r][c].getPatientID();
+                                System.out.println(bedLabel + ": [Occupied by " + patientID + "]");
+                                reportOccupiedCount++;
+                            }
+                        }
+                    }
+                    if (reportOccupiedCount == 0) {
+                        System.out.println("No beds are currently occupied.");
+                    }
+
+                    // 4. Total registered patients
+                    System.out.println("\nTotal Registered Patients: " + patientList.size());
+
+                    // 5. Total occupied beds
+                    System.out.println("Total Occupied Beds: " + reportOccupiedCount);
+
+                    // 6. Ward occupancy percentage
+                    int totalBeds = 4 * 5;
+                    double occupancyPercentage = ((double) reportOccupiedCount / totalBeds) * 100;
+                    System.out.printf("Ward Occupancy: %.1f%%\n", occupancyPercentage);
+
                     break;
 
                 case 8:
+                    System.out.println("\n--- Sort Patients ---");
+
+                    if (patientList.isEmpty()) {
+                        System.out.println("No patients to sort.");
+                        break;
+                    }
+
+                    System.out.println("1. Sort by Surname");
+                    System.out.println("2. Sort by Patient ID");
+                    System.out.print(">> ");
+                    String sortChoice = sc.nextLine();
+
+                    if (sortChoice.equals("1") || sortChoice.equals("2")) {
+
+                        // Bubble sort: repeatedly compare neighbouring patients and swap if out of order
+                        for (int i = 0; i < patientList.size() - 1; i++) {
+                            for (int j = 0; j < patientList.size() - 1 - i; j++) {
+
+                                Patient current = patientList.get(j);
+                                Patient next = patientList.get(j + 1);
+
+                                boolean shouldSwap;
+                                if (sortChoice.equals("1")) {
+                                    shouldSwap = current.getLastName().compareToIgnoreCase(next.getLastName()) > 0;
+                                } else {
+                                    shouldSwap = current.getPatientID().compareToIgnoreCase(next.getPatientID()) > 0;
+                                }
+
+                                if (shouldSwap) {
+                                    patientList.set(j, next);
+                                    patientList.set(j + 1, current);
+                                }
+                            }
+                        }
+
+                        System.out.println("Patients sorted successfully.");
+                        System.out.println("---------------------------------");
+                        for (int i = 0; i < patientList.size(); i++) {
+                            patientList.get(i).displayDetails();
+                            System.out.println("---------------------------------");
+                        }
+
+                    } else {
+                        System.out.println("Invalid choice.");
+                    }
+                    break;
+
+                case 9:
                     System.out.println("Exiting the system. Goodbye!");
                     break;
 
@@ -467,22 +578,3 @@ public class Main {
         } while (userChoice != QUIT);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

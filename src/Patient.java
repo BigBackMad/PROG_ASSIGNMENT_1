@@ -8,6 +8,9 @@ public class Patient {
     private String medicalCondition;
     private PatientCategory category;
 
+    // Empty constructor - still used for Outpatient/Emergency via setters
+    public Patient() {
+    }
 
     // Example Getter: Retrieves the Patient ID
     public String getPatientID() {
@@ -70,6 +73,18 @@ public class Patient {
     }
 
     public void setCategory(PatientCategory category) {
+        this.category = category;
+    }
+
+    // Parameterized constructor - called by Inpatient via super()
+    public Patient(String patientID, String firstName, String lastName, int age,
+                   String gender, String medicalCondition, PatientCategory category) {
+        this.patientID = patientID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.gender = gender;
+        this.medicalCondition = medicalCondition;
         this.category = category;
     }
 
