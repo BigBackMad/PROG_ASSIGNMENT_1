@@ -1,6 +1,9 @@
 import java.util.Scanner;
 import java.util.*;
 
+// Logic (register, search, update, delete, allocate/release bed, sort) lives in
+// the PatientManager class now, so it can be unit tested without needing Scanner input.
+// This class just handles the menu, input, and printing.
 public class Main {
 
     private static Inpatient[][] wardBeds = new Inpatient[4][5];
@@ -31,8 +34,8 @@ public class Main {
                 sc.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
-                sc.nextLine();
-                userChoice = -1; // doesn't match any case so goes to default
+                sc.nextLine(); // clear the bad input
+                userChoice = -1; // doesn't match any case so falls to default
             }
 
             switch (userChoice) {
@@ -42,6 +45,13 @@ public class Main {
 
                     System.out.print("Enter 6-digit Patient ID >> ");
                     String id = sc.nextLine();
+
+                    // Patient ID must =  6 digits
+                    //\d matches digit {6} means theres 6.
+                    if (!id.matches("\\d{6}")) {
+                        System.out.println("Error: Patient ID must be exactly 6 digits. Registration cancelled.");
+                        break;
+                    }
 
                     System.out.print("Enter First Name >> ");
                     String firstName = sc.nextLine();
@@ -66,7 +76,7 @@ public class Main {
                     System.out.print("Enter Medical Condition >> ");
                     String condition = sc.nextLine();
 
-                    // Build category menu from the enum using .values()
+                    // Build the category menu from the enum itself using .values()
                     System.out.println("Select Category:");
                     PatientCategory[] categories = PatientCategory.values();
                     for (int i = 0; i < categories.length; i++) {
@@ -123,8 +133,9 @@ public class Main {
                             System.out.println("2. Last Name");
                             System.out.println("3. Age");
                             System.out.println("4. Medical Condition");
-                            System.out.println("5. Category (Inpatient / Outpatient / Emergency)");
-                            System.out.println("6. Done updating");
+                            System.out.println("5. Gender");
+                            System.out.println("6. Category (Inpatient / Outpatient / Emergency)");
+                            System.out.println("7. Done updating");
                             System.out.print(">> ");
                             String choice = sc.nextLine();
 
@@ -159,6 +170,12 @@ public class Main {
                                     break;
 
                                 case "5":
+                                    System.out.print("Enter NEW Gender >> ");
+                                    foundPatient.setGender(sc.nextLine());
+                                    System.out.println("Gender updated.");
+                                    break;
+
+                                case "6":
                                     System.out.println("1. Inpatient");
                                     System.out.println("2. Outpatient");
                                     System.out.println("3. Emergency");
@@ -185,7 +202,7 @@ public class Main {
                                     }
                                     break;
 
-                                case "6":
+                                case "7":
                                     updating = false;
                                     break;
 
