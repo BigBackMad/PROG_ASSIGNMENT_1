@@ -1,9 +1,6 @@
 import java.util.Scanner;
 import java.util.*;
 
-// Logic (register, search, update, delete, allocate/release bed, sort) lives in
-// the PatientManager class now, so it can be unit tested without needing Scanner input.
-// This class just handles the menu, input, and printing.
 public class Main {
 
     private static Inpatient[][] wardBeds = new Inpatient[4][5];
