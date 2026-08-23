@@ -1,13 +1,8 @@
 import java.util.ArrayList;
 
-/*
- * Holds the core patient/bed logic, separated out from Main so it can be
- * unit tested without needing Scanner input.
- */
-
 public class PatientManager {
 
-    // Returns true if a patient with this ID already exists
+    // checks if patient ID alrady exists
     public static boolean isDuplicateID(ArrayList<Patient> patientList, String id) {
         for (int i = 0; i < patientList.size(); i++) {
             if (patientList.get(i).getPatientID().equals(id)) {
@@ -17,7 +12,7 @@ public class PatientManager {
         return false;
     }
 
-    // Returns the matching Patient, or null if not found
+    // returns the patient with matching ID, or null
     public static Patient findPatientByID(ArrayList<Patient> patientList, String id) {
         for (int i = 0; i < patientList.size(); i++) {
             if (patientList.get(i).getPatientID().equals(id)) {
@@ -27,7 +22,7 @@ public class PatientManager {
         return null;
     }
 
-    // Registers a patient. Returns "DUPLICATE_ID" or "SUCCESS".
+    // register patient
     public static String registerPatient(ArrayList<Patient> patientList, String id, String firstName,
                                          String lastName, int age, String gender, String condition,
                                          int catChoice) {
@@ -62,7 +57,7 @@ public class PatientManager {
         return "SUCCESS";
     }
 
-    // Deletes a patient and frees their bed if they had one. Returns "NOT_FOUND" or "SUCCESS".
+    // Deletes a patient and frees bed if they had one
     public static String deletePatient(ArrayList<Patient> patientList, Inpatient[][] wardBeds, String id) {
         int deleteIndex = -1;
         for (int i = 0; i < patientList.size(); i++) {
@@ -88,9 +83,8 @@ public class PatientManager {
         return "SUCCESS";
     }
 
-    // Allocates the first free bed to the given patient ID.
-    // Returns the bed code (e.g. "B07") on success, or one of:
-    // "NOT_FOUND", "NOT_INPATIENT", "ALREADY_HAS_BED", "WARD_FULL"
+    // Allocates  first free bed to given patient ID.
+    // Returns bed code
     public static String allocateBed(ArrayList<Patient> patientList, Inpatient[][] wardBeds, String targetID) {
         Patient targetPatient = findPatientByID(patientList, targetID);
 
@@ -128,7 +122,7 @@ public class PatientManager {
         return "WARD_FULL";
     }
 
-    // Releases the bed occupied by the given patient ID. Returns "NOT_FOUND" or "SUCCESS".
+    // Releases the bed occupied
     public static String releaseBed(Inpatient[][] wardBeds, String releaseID) {
         for (int r = 0; r < wardBeds.length; r++) {
             for (int c = 0; c < wardBeds[r].length; c++) {
@@ -142,7 +136,7 @@ public class PatientManager {
         return "NOT_FOUND";
     }
 
-    // Bubble sorts patientList by surname (in place)
+    // Bubble sorts patientList by surname
     public static void sortBySurname(ArrayList<Patient> patientList) {
         for (int i = 0; i < patientList.size() - 1; i++) {
             for (int j = 0; j < patientList.size() - 1 - i; j++) {
@@ -157,7 +151,7 @@ public class PatientManager {
         }
     }
 
-    // Bubble sorts patientList by Patient ID (in place)
+    // Bubble sorts patientList by Patient ID
     public static void sortByPatientID(ArrayList<Patient> patientList) {
         for (int i = 0; i < patientList.size() - 1; i++) {
             for (int j = 0; j < patientList.size() - 1 - i; j++) {
@@ -172,7 +166,7 @@ public class PatientManager {
         }
     }
 
-    // Counts how many beds are currently occupied
+    // Counts how many beds are occupied
     public static int countOccupiedBeds(Inpatient[][] wardBeds) {
         int count = 0;
         for (int r = 0; r < wardBeds.length; r++) {
