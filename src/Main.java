@@ -31,8 +31,8 @@ public class Main {
                 sc.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
-                sc.nextLine(); // clear the bad input
-                userChoice = -1; // doesn't match any case, falls to default
+                sc.nextLine();
+                userChoice = -1; // doesn't match any case so goes to default
             }
 
             switch (userChoice) {
@@ -66,7 +66,7 @@ public class Main {
                     System.out.print("Enter Medical Condition >> ");
                     String condition = sc.nextLine();
 
-                    // Build the category menu from the enum itself using .values()
+                    // Build category menu from the enum using .values()
                     System.out.println("Select Category:");
                     PatientCategory[] categories = PatientCategory.values();
                     for (int i = 0; i < categories.length; i++) {
