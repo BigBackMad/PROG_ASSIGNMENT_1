@@ -15,7 +15,7 @@ public class Main {
 
         do {
             System.out.println(
-                    " 1. Register a new patient.\n" +
+                    "\n 1. Register a new patient.\n" +
                             " 2. Search for a patient using their Patient ID.\n" +
                             " 3. Update an existing patient's details.\n" +
                             " 4. Delete a patient.\n" +
