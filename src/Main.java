@@ -305,6 +305,11 @@ public class Main {
                                 break;
 
                             case "3":
+
+                                //label is calculated when displayed
+                                // Once patient is allocated - label is also saved
+                                // on the Inpatient object so it dont need recalculating later.
+
                                 System.out.println("\n--- Complete Ward Layout ---");
                                 int layoutBedNum = 0;
 
